@@ -15,9 +15,7 @@ def get_tagname_or_hash():
 
     # get tagname
     tags_cmd = ['git', 'for-each-ref', '--points-at=HEAD', '--count=2', '--sort=-version:refname', '--format=%(refname:short)', 'refs/tags']
-    tags = check_output(tags_cmd).split()
-
-    if tags:
+    if tags := check_output(tags_cmd).split():
         return tags[0] + ('+' if len(tags) > 1 else '')
     elif hash_:
         return hash_
@@ -46,10 +44,7 @@ for st in status:
         else:
             # current and remote branch info
             branch, rest = st[2].strip().split('...')
-            if len(rest.split(' ')) == 1:
-                # remote_branch = rest.split(' ')[0]
-                pass
-            else:
+            if len(rest.split(' ')) != 1:
                 # ahead or behind
                 divergence = ' '.join(rest.split(' ')[1:])
                 divergence = divergence.lstrip('[').rstrip(']')
