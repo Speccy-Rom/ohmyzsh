@@ -17,8 +17,10 @@ def get_http_proxy():
 
 
 def make_proxies(url: str):
-    proxies = {"%s_PROXY" % _: url for _ in ("HTTP", "HTTPS", "FTP", "RSYNC", "ALL")}
-    proxies.update({name.lower(): value for (name, value) in proxies.items()})
+    proxies = {
+        f"{_}_PROXY": url for _ in ("HTTP", "HTTPS", "FTP", "RSYNC", "ALL")
+    } | {name.lower(): value for (name, value) in proxies.items()}
+
     proxies["GIT_SSH"] = ssh_agent
     return proxies
 
